@@ -5,14 +5,14 @@ public class Expenditure extends Deal{
     private int price;
 
     public Expenditure(String nameOfExpenditure, int price) {
-        super(nameOfExpenditure, price, 0);
+        super(nameOfExpenditure, -price, 0);
     }
 
-    public String getNameOfExpenditure() {
-        return nameOfExpenditure;
-    }
-
+    @Override
     public int getPrice() {
+        int price = super.getPrice();
+        System.out.printf("Трата - %s на %d руб.\n", getComment(), Math.abs(price));
         return price;
     }
+
 }

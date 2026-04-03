@@ -11,4 +11,14 @@ public class Deal {
         this.debitChange = debitChange;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public int getPrice() {
+        return creditChange == 0 ? debitChange : creditChange;
+
+    }
 }
+
+

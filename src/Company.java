@@ -1,6 +1,8 @@
+import com.obmachevsky.deal.Deal;
+import com.obmachevsky.deal.Sale;
 import com.obmachevsky.taxes.TaxSystem;
 
-public class Company {
+class Company {
     private String title;
     private int debit;
     private int credit;
@@ -30,7 +32,20 @@ public class Company {
 
     protected void payTaxes() {
         int tax = taxSystem.calcTaxFor(debit, credit);
+        System.out.println();
+        System.out.printf("debit - %d, credit - %d\n", debit, credit);
         System.out.printf("Компания %s уплатила налог в размере: %d руб.", getTitle(), tax);
+        System.out.println();
         debit = credit = 0;
+    }
+
+    protected int applyDeals(Deal[] deals) throws InterruptedException {
+        for (Deal deal : deals) {
+            shiftMoney(deal.getPrice());
+            Thread.sleep(300);
+        }
+        int debitResult = debit, creditResult = credit;
+        payTaxes();
+        return debitResult - creditResult;
     }
 }

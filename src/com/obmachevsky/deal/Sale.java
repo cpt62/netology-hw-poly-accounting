@@ -8,11 +8,10 @@ public class Sale extends Deal {
         super(nameOfService, 0, price);
     }
 
-    public String getNameOfSale() {
-        return nameOfSale;
-    }
-
+    @Override
     public int getPrice() {
+        int price = super.getPrice();
+        System.out.printf("Продажа - %s на %d руб.\n", getComment(), price);
         return price;
     }
 }

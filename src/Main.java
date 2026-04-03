@@ -1,32 +1,39 @@
+
+import com.obmachevsky.deal.Deal;
+import com.obmachevsky.deal.Expenditure;
+import com.obmachevsky.deal.Sale;
 import com.obmachevsky.taxes.SimTaxSystemIncome;
+import com.obmachevsky.taxes.SimTaxSystemIncomeMinConsumption;
 
 public class Main {
-    public static void main(String[] args) {
-        Company netology = new Company("Netology", new SimTaxSystemIncome());
+    public static void main(String[] args) throws InterruptedException {
+        // Создаем компанию "Нетология"
+        Company netology = new Company("Нетология", new SimTaxSystemIncome());
 
-        int priceOfCourse = 100_000; // Стоимость курса
-        int promoCode = 10;          // Промокод
-        int expertSalary = -50_000;   // Заработная плата преподавателя (надеюсь не обидел)
-        int advertisement = -10_000;  // Стоимость рекламы
-        int hosting = -15_000;        // Стоимость хостинга
+        // В качестве реализации, будет выступать продажа услуги обучения на курсе "Java разработчик с нуля"
+        int priceOfCourse = 100_000; // стоимость курса
 
-        // Не стал затевать отдельный массив студентов (оставил их безымянными), а вот массив с наличием промокода - инициализировал.
-        boolean[] discount = {true, false, true, false, false};
+        //В качестве трат, будут фигурировать: ЗП преподавателя, реклама компании, хостинг сайта компании
+        int expertSalary = 150_000; // ЗП преподавателя
+        int advertising = 75_000;   // Траты на рекламу
+        int hosting = 40_000;       // Хостинг сайта
 
-        // Набираем студентов на курс. Идёт сбор денежных средств за обучение
-        for (boolean b : discount) {
-            netology.shiftMoney(!b ? priceOfCourse : priceOfCourse - priceOfCourse / 100 * promoCode);
-        }
+        // Предположим, что на курс необходимо набрать 5 слушателей
+        Deal[] deals = {
+                new Sale("место на курсе \"Java разработчик с нуля\"", priceOfCourse),
+                new Sale("место на курсе \"Java разработчик с нуля\"", priceOfCourse),
+                new Sale("место на курсе \"Java разработчик с нуля\"", priceOfCourse),
+                new Sale("место на курсе \"Java разработчик с нуля\"", priceOfCourse),
+                new Sale("место на курсе \"Java разработчик с нуля\"", priceOfCourse),
+                new Expenditure("заработная плата преподавателя", expertSalary),
+                new Expenditure("реклама компании", advertising),
+                new Expenditure("хостинг сайта компании", hosting),
+        };
 
-        //Набрали курс. Оплачиваем рекламу, работу экспертов, хостинг сайта
-        netology.shiftMoney(expertSalary);
-        netology.shiftMoney(advertisement);
-        netology.shiftMoney(hosting);
+        // Если необходимо перейти на другую налоговую систему, следует закомментировать строку.
+        netology.setTaxSystem(new SimTaxSystemIncomeMinConsumption());
 
-        //Если понадобится изменить систему налогообложения, то следует раскомментировать следующую строку
-        //netology.setTaxSystem(new SimTaxSystemIncomeMinConsumption());
-
-        netology.payTaxes();
+        netology.applyDeals(deals);
 
     }
 }
